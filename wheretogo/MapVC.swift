@@ -10,7 +10,7 @@ import UIKit
 import AlamofireImage
 import CoreLocation
 import MapKit
-class MapVC: UIViewController {
+class MapVC: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     var locationManager = CLLocationManager()
@@ -26,27 +26,48 @@ class MapVC: UIViewController {
     }
 
     func addTapGesture(){
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dropPin))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dropPin(sender:)))
         tap.numberOfTapsRequired = 2
+//        tap.delegate = self
         mapView.addGestureRecognizer(tap)
     }
     
     @IBAction func center_TouchUpInside(_ sender: Any) {
-        centerUserOnMapView()
+        centerUserOnMapView(withCoordinate: nil)
     }
 }
 extension MapVC: MKMapViewDelegate{
-    func centerUserOnMapView(){
+    func centerUserOnMapView(withCoordinate pinCoordinate : CLLocationCoordinate2D?){
         guard let coordinate = locationManager.location?.coordinate else {
             return
         }
-        let region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
-        mapView.setRegion(region, animated: true)
+        
+        if pinCoordinate != nil {
+             let region = MKCoordinateRegionMakeWithDistance(pinCoordinate!, 1000, 1000)
+             mapView.setRegion(region, animated: true)
+        }else {
+             let region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
+             mapView.setRegion(region, animated: true)
+        }
+        
+        
         
     }
     
-    func dropPin(){
-        print("Hello")
+    func dropPin(sender: UIGestureRecognizer){
+        removePin()
+        let point = sender.location(in: mapView)
+        let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+        
+        let pin = DropPin(coordinate: coordinate, indentifier: "droppablePin")
+        
+        mapView.addAnnotation(pin)
+        centerUserOnMapView(withCoordinate: coordinate)
+    }
+    func removePin() {
+        for anno in mapView.annotations{
+            mapView.removeAnnotation(anno)
+        }
     }
 }
 extension MapVC: CLLocationManagerDelegate{
@@ -60,7 +81,7 @@ extension MapVC: CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways {
-            centerUserOnMapView()
+            centerUserOnMapView(withCoordinate: nil)
         }
     }
 }
