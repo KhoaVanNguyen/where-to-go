@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 
 class DropPin: NSObject, MKAnnotation{
-    dynamic var coordinate: CLLocationCoordinate2D
+    var coordinate: CLLocationCoordinate2D
     var indentifier: String
     init(coordinate: CLLocationCoordinate2D, indentifier: String){
         self.coordinate = coordinate
