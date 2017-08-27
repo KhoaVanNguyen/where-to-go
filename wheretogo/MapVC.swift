@@ -12,6 +12,13 @@ import CoreLocation
 import MapKit
 import Alamofire
 class MapVC: UIViewController, UIGestureRecognizerDelegate {
+    
+    
+    
+    var job: String = "android"
+    
+    var jobs = [Job]()
+    
     @IBOutlet weak var pullUpViewConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var pullUpView: UIView!
@@ -117,18 +124,29 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     
-    func getUrls(url: String, handler: @escaping (_ status: Bool) -> Void){
-        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).responseJSON { (response) in
-            self.urlArrays = []
-            if response.result.error != nil {
-                return
-            }else {
-                guard let json = response.result.value as? Dictionary<String,Any> else {
-                    return
+    func downloadJobs(url: String, handler: @escaping (_ status: Bool) -> Void){
+       Alamofire.request(url).responseJSON { (response) in
+        if response.result.error != nil {
+            return
+        }else {
+          
+            if let data = response.result.value as? [String:Any]{
+                
+                if let jobs = data["results"] as? [[String:Any]]{
+                    
+                    for element in jobs{
+                        let job = Job(job: element)
+                        self.jobs.append(job)
+                    }
+                    self.collectionView?.reloadData()
                 }
-                print(json)
-                handler(true)
+                
+                
+                
             }
+    
+            handler(true)
+        }
         }
     }
 }
@@ -173,18 +191,21 @@ extension MapVC: MKMapViewDelegate{
         
         let pin = DropPin(coordinate: coordinate, indentifier: "droppablePin")
         
-
-       
         let location = CLLocation(latitude: pin.coordinate.latitude, longitude: pin.coordinate.longitude)
         reverseGeocoding(location: location) { (dict) in
             
             let city = dict["City"] as! String
             let country = dict["CountryCode"] as! String
-            let url = getIndeedURL(job: "IOS", location: city, radius: 25, jt: "fulltime", co: country)
-            print(url)
-            self.getUrls(url: url) { (complete) in
-                print(self.urlArrays)
-            }
+            let url = getIndeedURL(job: self.job, location: city, radius: 25, jt: "fulltime", co: country)
+            
+            let strimUrl = url.components(separatedBy: " ").joined(separator: "%20")
+
+            self.downloadJobs(url: strimUrl, handler: { (handler) in
+                if handler {
+                    print("success")
+                    print(self.jobs.count)
+                }
+            })
         }
         mapView.addAnnotation(pin)
         centerUserOnMapView(withCoordinate: coordinate)
@@ -218,7 +239,7 @@ extension MapVC: UICollectionViewDataSource{
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return jobs.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoCell

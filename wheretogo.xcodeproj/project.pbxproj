@@ -21,6 +21,7 @@
 		D286BE6A1F526C8900EA9904 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D286BE691F526C8900EA9904 /* HomeVC.swift */; };
 		D286BE6C1F52B49B00EA9904 /* randomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D286BE6B1F52B49B00EA9904 /* randomColor.swift */; };
 		D286BE6E1F52BA2B00EA9904 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D286BE6D1F52BA2B00EA9904 /* ImageExtension.swift */; };
+		D286BE701F52C03700EA9904 /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = D286BE6F1F52C03700EA9904 /* Job.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		D286BE691F526C8900EA9904 /* HomeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		D286BE6B1F52B49B00EA9904 /* randomColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = randomColor.swift; sourceTree = "<group>"; };
 		D286BE6D1F52BA2B00EA9904 /* ImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
+		D286BE6F1F52C03700EA9904 /* Job.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				D251000D1F4F267500E6C824 /* DropPin.swift */,
+				D286BE6F1F52C03700EA9904 /* Job.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				D251FFFC1F4F0EF300E6C824 /* MapVC.swift in Sources */,
 				D27E862E1F511F7100D3E5A6 /* reverseGeocoding.swift in Sources */,
 				D27512241F506C1B00A3779D /* Constant.swift in Sources */,
+				D286BE701F52C03700EA9904 /* Job.swift in Sources */,
 				D27E86311F512E1A00D3E5A6 /* FancyTextField.swift in Sources */,
 				D251000E1F4F267500E6C824 /* DropPin.swift in Sources */,
 				D251FFFA1F4F0EF300E6C824 /* AppDelegate.swift in Sources */,

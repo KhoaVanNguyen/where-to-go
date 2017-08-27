@@ -24,9 +24,6 @@ func getImageView(withText text: NSString) -> UIImageView{
     return imageView
 }
 
-
-
-
 extension UIImage{
     func addText(text: NSString,atPoint point: CGPoint, textColor: UIColor?, textFont: UIFont?) -> UIImage {
         
